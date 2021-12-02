@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import App from './App';
 import About from './About';
 import Contact from './Contact';
 import Login from './Login';
 import Dashboard from './Dashboard';
-import getUser from './Utils/Common';
+import { getUser } from './Utils/Common';
+import Header from './Header';
 
 const routing = (
   <BrowserRouter>
     <div>
+	<Header />
 	 <Routes>
         	<Route path="/" element={<App />} />
         	<Route path="/about" element={<About />} />
@@ -28,8 +30,7 @@ const routing = (
 )
 
 function RequireAuth({ children, redirectTo }) {
-  let isAuthenticated = getUser();
-  return isAuthenticated ? children : <Navigate to={redirectTo} />;
+  return getUser() ? children : <Navigate to={redirectTo} />;
 }
 
 ReactDOM.render(routing, document.getElementById('root'));

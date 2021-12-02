@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { setUserSession } from './Utils/Common';
+import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
   const username = useFormInput('');
   const password = useFormInput('');
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();  
+  
   // handle button click of login form
   const handleLogin = () => {
     setError(null);
@@ -15,12 +17,21 @@ function Login(props) {
     axios.post('http://localhost:4000/users/signin', { username: username.value, password: password.value }).then(response => {
       setLoading(false);
       setUserSession(response.data.token, response.data.user);
-      props.history.push('/dashboard');
+	 navigate('/dashboard');
     }).catch(error => {
       setLoading(false);
-      if (error.response.status === 401) setError(error.response.data.message);
-      else setError("Something went wrong. Please try again later.");
-    });
+	    if(error.response) {
+	    	if (error.response.status === 401) {
+			setError(error.response.data.message);
+		} else {
+			setError("Something went wrong. Please try again later.");
+		}
+	} else if (error.request) {
+		setError(error.request);
+	} else {
+		setError(error.message);
+	}
+	    });
   }
 
   return (
