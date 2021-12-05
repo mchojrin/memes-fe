@@ -8,6 +8,7 @@ import Contact from './Contact';
 import Login from './Login';
 import Signup from './Signup';
 import Dashboard from './Dashboard';
+import Upload from './Upload';
 import { getUser } from './Utils/Common';
 import Header from './Header';
 
@@ -24,6 +25,11 @@ const routing = (
 				<Route path="/dashboard" element={
 					<RequireAuth redirectTo="/login">
 						<Dashboard />
+					</RequireAuth>
+				} />
+				<Route path="/upload" element={
+					<RequireAuth redirectTo="/login">
+						<Upload />
 					</RequireAuth>
 				} />
 			</Routes>

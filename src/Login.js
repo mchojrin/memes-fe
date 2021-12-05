@@ -17,21 +17,21 @@ function Login(props) {
     axios.post('http://localhost:4000/users/signin', { username: username.value, password: password.value }).then(response => {
       setLoading(false);
       setUserSession(response.data.token, response.data.user);
-	 navigate('/dashboard');
+      navigate('/dashboard');
     }).catch(error => {
       setLoading(false);
-	    if(error.response) {
-	    	if (error.response.status === 401) {
-			setError(error.response.data.message);
-		} else {
-			setError("Something went wrong. Please try again later.");
-		}
-	} else if (error.request) {
-		setError(error.request);
-	} else {
-		setError(error.message);
-	}
-	    });
+      if (error.response) {
+        if (error.response.status === 401) {
+          setError(error.response.data.message);
+        } else {
+          setError("Something went wrong. Please try again later.");
+        }
+      } else if (error.request) {
+        setError(error.request);
+      } else {
+        setError(error.message);
+      }
+    });
   }
 
   return (
