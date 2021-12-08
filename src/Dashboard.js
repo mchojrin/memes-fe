@@ -17,13 +17,40 @@ function Dashboard(props) {
     navigate('/login');
   }
 
+  console.log('Looking for memes');
+
   axios.get('http://localhost:4000/memes/', {
-    userid: user.id
-  }).then(
+    headers: {
+      'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+    }
+  }
+  ).then(
     response => {
       setLoading(false);
-      const memes = response.data;
-      // navigate('/dashboard');
+      console.log('Got memes ' + response.data);
+      const memes = response.data.split(',');
+
+      console.log('Memes array: ' + JSON.stringify(memes));
+
+      const picturesItems = memes.map((picture) =>
+        <li><article class="picture">
+          <img src={picture.url} alt={picture.name} />
+        </article></li>
+      );
+
+      return (
+        <div>
+          Welcome {user.name}! <input type="button" onClick={handleLogout} value="Logout" />
+          <hr />
+          {picturesItems.length > 0 ? "Uploaded images" : "You haven't uploaded any pictures yet"}
+          <section class="pictures_list">
+            <ul>
+              {picturesItems}
+            </ul>
+          </section>
+          <p><a href="/Upload">Upload new picture</a></p>
+        </div>
+      );
     }).catch(error => {
       if (error.response) {
         if (error.response.status === 401) {
@@ -37,33 +64,6 @@ function Dashboard(props) {
         setError(error.message);
       }
     });
-
-  const pictures = [
-    {
-      name: 'first_pic',
-      url: '/first.img'
-    }
-  ];
-
-  const picturesItems = pictures.map((picture) =>
-    <li><article class="picture">
-      <img src={picture.url} alt={picture.name} />
-    </article></li>
-  );
-
-  return (
-    <div>
-      Welcome {user.name}! <input type="button" onClick={handleLogout} value="Logout" />
-      <hr />
-      {picturesItems.length > 0 ? "Uploaded images" : "You haven't uploaded any pictures yet"}
-      <section class="pictures_list">
-        <ul>
-          {picturesItems}
-        </ul>
-      </section>
-      <p><a href="/Upload">Upload new picture</a></p>
-    </div>
-  );
 }
 
 export default Dashboard;

@@ -35,8 +35,8 @@ function Upload(props) {
                 }
             }
         ).then(response => {
-            setLoading(false);
             console.log('Upload succesful!');
+            setLoading(false);
             navigate('/dashboard');
         }).catch(error => {
             setLoading(false);
