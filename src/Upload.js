@@ -30,12 +30,13 @@ function Upload(props) {
             'http://localhost:4000/memes/upload', formData,
             {
                 headers: {
-                    'Content-Type': "multipart/form-data"
+                    'Content-Type': "multipart/form-data",
+                    'Authorization' : 'Bearer ' + sessionStorage.getItem('token')
                 }
             }
         ).then(response => {
             setLoading(false);
-            setUserSession(response.data.token, response.data.user);
+            console.log('Upload succesful!');
             navigate('/dashboard');
         }).catch(error => {
             setLoading(false);
