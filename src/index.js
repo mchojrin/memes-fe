@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import App from './App';
+import Home from './Home';
 import About from './About';
 import Contact from './Contact';
 import Login from './Login';
@@ -17,7 +18,7 @@ const routing = (
 		<div>
 			<Header />
 			<Routes>
-				<Route path="/" element={<App />} />
+				<Route path="/" element={<Home />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/login" element={<Login />} />
