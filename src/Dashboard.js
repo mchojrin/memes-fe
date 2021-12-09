@@ -21,39 +21,39 @@ function Dashboard(props) {
   useEffect(() => {
     console.log('Looking for memes');
 
-  const pictures = axios.get('http://localhost:4000/memes/', {
-    headers: {
-      'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-    }
-  }).then(response => {
-    setLoading(false);
-    console.log('Got memes ' + response.data);
-    setMemesUrls(response.data);
-  }).catch(error => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        setError(error.response.data.message);
-      } else {
-        setError("Something went wrong. Please try again later.");
+    const pictures = axios.get('http://localhost:4000/memes/', {
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }
-    } else if (error.request) {
-      setError(error.request);
-    } else {
-      setError(error.message);
-    }
-  });
+    }).then(response => {
+      setLoading(false);
+      console.log('Got memes ' + response.data);
+      setMemesUrls(response.data);
+    }).catch(error => {
+      if (error.response) {
+        if (error.response.status === 401) {
+          setError(error.response.data.message);
+        } else {
+          setError("Something went wrong. Please try again later.");
+        }
+      } else if (error.request) {
+        setError(error.request);
+      } else {
+        setError(error.message);
+      }
+    });
   }, []);
 
   const imageElements = memesUrls.map((image) =>
     <article>
-      <img src={image} style={{"max-width": "600px", "max-height" : "600px"}} />
+      <img src={image} className='Meme' />
       <hr />
     </article>
   );
-  
+
   return (
     <div>
-      <span>Welcome {user.name}!</span><span style={{float: "right"}}><input type="button" onClick={handleLogout} value="Logout" /></span>
+      <span>Welcome {user.name}!</span><span style={{ float: "right" }}><input type="button" onClick={handleLogout} value="Logout" /></span>
       <hr />
       <section class="pictures_list">
         <h2>{memesUrls.length > 0 ? "These are your pictures" : "You haven't uploaded any picture yet"}</h2>
