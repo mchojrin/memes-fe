@@ -46,14 +46,14 @@ function Dashboard(props) {
 
   const imageElements = memesUrls.map((image) =>
     <article>
-      <img src={image} />
+      <img src={image} style={{"max-width": "600px", "max-height" : "600px"}} />
       <hr />
     </article>
   );
   
   return (
     <div>
-      Welcome {user.name}! <input type="button" onClick={handleLogout} value="Logout" />
+      <span>Welcome {user.name}!</span><span style={{float: "right"}}><input type="button" onClick={handleLogout} value="Logout" /></span>
       <hr />
       <section class="pictures_list">
         <h2>{memesUrls.length > 0 ? "These are your pictures" : "You haven't uploaded any picture yet"}</h2>
