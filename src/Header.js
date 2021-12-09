@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { getUser } from './Utils/Common.js';
 
-class Header extends Component {
-  render() {
-      return <div>
-        { !(['/login', '/signup'].includes(window.location.pathname.toLowerCase())) ? (getUser() ? <p><a href="/logout">Logout</a></p> : <p><a href="Login">Login</a> - <a href="Signup">Sign up</a></p> ) : '' }
-      </div>
-  }
+function Header(props) {
+  const currentUrl = window.location.pathname.toLowerCase();
+  const logoutLink = <p><a href="/logout">Logout</a></p>;
+  const loginLink = <a href="Login">Login</a>;
+  const signupLink = <a href="Signup">Sign up</a>;
+
+  return <div>
+    {!(['/login', '/signup'].includes(currentUrl)) ? ( !getUser() ? <p>{loginLink} - {signupLink} </p> : '' ) : ''}
+  </div>
 }
 
 export default Header;
