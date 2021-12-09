@@ -48,7 +48,7 @@ function Signup(props) {
 
     return (
         <div>
-            Signup<br /><br />
+            <h2>Signup</h2>
             <div>
                 Username<br />
                 <input type="text" {...username} autoComplete="new-username" />
