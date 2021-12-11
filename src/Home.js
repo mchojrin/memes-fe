@@ -30,7 +30,7 @@ function Home(props) {
 
   const imageElements = memesUrls.map((image) =>
     <article>
-      <img src={image} className='Meme' />
+      <a href={image} target="_blank"><img src={image} className='Meme' /></a>
       <hr />
     </article>
   );

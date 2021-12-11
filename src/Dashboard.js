@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getUser, removeUserSession } from './Utils/Common';
-import { useNavigate } from 'react-router-dom';
+import { getUser } from './Utils/Common';
 import axios from 'axios';
 
 function Dashboard(props) {
   const [loading, setLoading] = useState(false);
   const user = getUser();
-  const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [memesUrls, setMemesUrls] = useState([]);
-
-  // handle click event of logout button
-  const handleLogout = () => {
-    console.log('Logging out');
-    removeUserSession();
-    console.log('Redirecting to login');
-    navigate('/login');
-  }
 
   useEffect(() => {
     console.log('Looking for memes');
@@ -46,15 +36,13 @@ function Dashboard(props) {
 
   const imageElements = memesUrls.map((image) =>
     <article>
-      <img src={image} className='Meme' />
+      <a href={image} target="_blank"><img src={image} className='Meme' /></a>
       <hr />
     </article>
   );
 
   return (
     <div>
-      <span>Welcome {user.name}!</span><span style={{ float: "right" }}><input type="button" onClick={handleLogout} value="Logout" /></span>
-      <hr />
       <section class="pictures_list">
         <h2>{memesUrls.length > 0 ? "These are your pictures" : "You haven't uploaded any picture yet"}</h2>
         {imageElements}
