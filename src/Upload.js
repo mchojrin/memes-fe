@@ -31,7 +31,7 @@ function Upload(props) {
             {
                 headers: {
                     'Content-Type': "multipart/form-data",
-                    'Authorization' : 'Bearer ' + sessionStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             }
         ).then(response => {
@@ -51,6 +51,7 @@ function Upload(props) {
     }
 
     return <div>
+        <h2>Upload</h2>
         <p>Select an image to upload</p>
         <input type="file" name="newImage" id="newImage" onChange={changeHandler} />
         {isFilePicked ? (
