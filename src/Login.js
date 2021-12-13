@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession } from './Utils/Common';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -9,11 +9,13 @@ function Login(props) {
   const password = useFormInput('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // handle button click of login form
   const handleLogin = () => {
     setError(null);
     setLoading(true);
+    
     axios.post(
       'http://localhost:4000/users/signin',
       {
@@ -21,7 +23,14 @@ function Login(props) {
         password: password.value
       }).then(response => {
         setLoading(false);
-        setUserSession(response.data.token, response.data.user);
+        // setUserSession(response.data.token, response.data.user);
+        dispatch({
+          type: 'user/login',
+          payload: {
+            user: response.data.user,
+            token: response.data.token
+          }
+        });
         navigate('/dashboard');
       }).catch(error => {
         setLoading(false);

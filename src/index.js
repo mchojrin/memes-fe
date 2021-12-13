@@ -10,47 +10,49 @@ import Login from './Login';
 import Signup from './Signup';
 import Dashboard from './Dashboard';
 import Upload from './Upload';
-import { getUser, removeUserSession } from './Utils/Common';
-import Header from './Header';
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+import MainMenu from './MainMenu';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Provider, useSelector } from 'react-redux';
+import { createStore } from 'redux';
 
-const user = getUser();
+const userReducer = (state, action) => {
+	switch (action.type) {
+		case 'user/login':
+			return {
+				user: action.payload.user,
+				token: action.payload.token
+			}
+		case 'user/logout':
+			return {
+				user: null,
+				token: null
+			}
+		default:
+			return {
+				user: state ? state.user : null,
+				token: state ? state.token : null
+			}
+	}
+};
 
-// handle click event of logout button
-const handleLogout = () => {
-	console.log('Logging out');
-	removeUserSession();
-	window.location.href = "/";
-}
-
-const userMenu = <NavDropdown title={user ? user.name : ''} id="basic-nav-dropdown">
-	<NavDropdown.Item href="/dashboard">Dashboard</NavDropdown.Item>
-	<NavDropdown.Item href="/upload">Upload new Meme</NavDropdown.Item>
-	<NavDropdown.Divider />
-	<NavDropdown.Item href="#" onClick={handleLogout}>Logout</NavDropdown.Item>
-</NavDropdown>;
-
-const publicMenu = <Nav className='me-auto'>
-	<Nav.Link href="/login">Login</Nav.Link>
-	<Nav.Link href="/signup">Signup</Nav.Link>
-</Nav>
+let store = createStore(userReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 const routing = (
-	<>
-		<Navbar bg="light" expand="lg">
-			<Container>
-				<Navbar.Brand href="#home">Leeway Academy</Navbar.Brand>
-				<Navbar.Toggle aria-controls="basic-navbar-nav" />
-				<Navbar.Collapse id="basic-navbar-nav">
-					<Nav className="me-auto">
-						<Nav.Link href="/">Home</Nav.Link>
-						{getUser() ? userMenu : publicMenu}
-					</Nav>
-				</Navbar.Collapse>
-			</Container>
-		</Navbar>
+	<Provider store={store}>
 		<BrowserRouter>
 			<div>
+				<Navbar bg="light" expand="lg">
+					<Container>
+						<Navbar.Brand href="#home">Leeway Academy</Navbar.Brand>
+						<Navbar.Toggle aria-controls="basic-navbar-nav" />
+						<Navbar.Collapse id="basic-navbar-nav">
+							<Nav className="me-auto">
+								<Nav.Link href="/">Home</Nav.Link>
+								<MainMenu />
+							</Nav>
+						</Navbar.Collapse>
+					</Container>
+				</Navbar>
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
@@ -70,11 +72,13 @@ const routing = (
 				</Routes>
 			</div>
 		</BrowserRouter>
-	</>
+	</Provider>
 )
 
 function RequireAuth({ children, redirectTo }) {
-	return getUser() ? children : <Navigate to={redirectTo} />;
+	const user = useSelector(state => state.user);
+
+	return user ? children : <Navigate to={redirectTo} />;
 }
 
 ReactDOM.render(routing, document.getElementById('root'));

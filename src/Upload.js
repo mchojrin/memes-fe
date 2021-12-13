@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { setUserSession } from './Utils/Common';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Upload(props) {
     const [loading, setLoading] = useState(false);
     const [selectedFile, setSelectedFile] = useState();
     const [isFilePicked, setIsFilePicked] = useState(false);
     const [error, setError] = useState(null);
+    const user = useSelector(state => state.user);
+    const token = useSelector(state => state.token);
 
     const navigate = useNavigate();
 
@@ -31,7 +33,7 @@ function Upload(props) {
             {
                 headers: {
                     'Content-Type': "multipart/form-data",
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                    'Authorization': 'Bearer ' + token
                 }
             }
         ).then(response => {

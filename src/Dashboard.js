@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getUser } from './Utils/Common';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function Dashboard(props) {
   const [loading, setLoading] = useState(false);
-  const user = getUser();
+  const user = useSelector(state => state.user);
+  const token = useSelector(state => state.token);
   const [error, setError] = useState(null);
   const [memesUrls, setMemesUrls] = useState([]);
 
@@ -13,7 +16,7 @@ function Dashboard(props) {
 
     const pictures = axios.get('http://localhost:4000/memes/', {
       headers: {
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Authorization': 'Bearer ' + token
       }
     }).then(response => {
       setLoading(false);
@@ -47,7 +50,7 @@ function Dashboard(props) {
         <h2>{memesUrls.length > 0 ? "These are your pictures" : "You haven't uploaded any picture yet"}</h2>
         {imageElements}
       </section>
-      <p><a href="/Upload">Upload new picture</a></p>
+      <p><Link to="/upload">Upload new picture</Link></p>
     </div>
   );
 }
